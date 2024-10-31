@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,10 +46,36 @@ public class LibroServicio {
     @Transactional(readOnly = true)
     public List<Libro> listarLibros() {
 
-        List<Libro> libros = new ArrayList();
+        List<Libro> libros = new ArrayList<>();
 
         libros = libroRepositorio.findAll();
         return libros;
+    }
+
+    @Transactional
+    public void modificarLibro(Long isbn, String titulo, int ejemplares, String idAutor, UUID idEditorial){
+        Optional<Libro> respuestaLibro = libroRepositorio.findById(isbn);
+        Optional<Autor> respuestaAutor = autorRepositorio.findById(idAutor);
+        Optional<Editorial> respuestaEditorial = editorialRepositorio.findById(idEditorial);
+        
+        Autor autor = new Autor();
+        Editorial editorial = new Editorial();
+
+        if (respuestaAutor.isPresent()) {
+            autor = respuestaAutor.get();
+        }
+
+        if (respuestaEditorial.isPresent()) {
+            editorial = respuestaEditorial.get();
+        }
+
+        if (respuestaLibro.isPresent()) {
+            Libro libro = respuestaLibro.get();
+            libro.setTitulo(titulo);
+            libro.setEjemplares(ejemplares);
+            libro.setAutor(autor);
+            libro.setEditorial(editorial);
+        }
     }
 
 }

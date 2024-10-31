@@ -2,6 +2,8 @@ package com.egg.biblioteca.servicios;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,9 +29,19 @@ public class EditorialServicio {
     @Transactional(readOnly = true)
     public List<Editorial> listarEditoriales() {
 
-        List<Editorial> editoriales = new ArrayList();
+        List<Editorial> editoriales = new ArrayList<>();
 
         editoriales = editorialRepositorio.findAll();
         return editoriales;
+    }
+    @Transactional
+    public void modificarEditorial(String nombre, UUID id){
+        Optional<Editorial> respuesta = editorialRepositorio.findById(id);
+        if (respuesta.isPresent()) {
+            Editorial editorial = respuesta.get();
+           
+            editorial.setNombre(nombre);
+            editorialRepositorio.save(editorial);
+        }
     }
 }
