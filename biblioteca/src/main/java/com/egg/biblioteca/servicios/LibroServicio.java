@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.egg.biblioteca.entidades.Autor;
 import com.egg.biblioteca.entidades.Editorial;
 import com.egg.biblioteca.entidades.Libro;
+import com.egg.biblioteca.excepciones.MiException;
 import com.egg.biblioteca.repositorios.AutorRepositorio;
 import com.egg.biblioteca.repositorios.EditorialRepositorio;
 import com.egg.biblioteca.repositorios.LibroRepositorio;
@@ -30,7 +31,8 @@ public class LibroServicio {
     EditorialRepositorio editorialRepositorio;
 
     @Transactional
-    public void crearLibro(Long isbn, String titulo, int ejemplares, String idAutor, UUID idEditorial){
+    public void crearLibro(Long isbn, String titulo, int ejemplares, String idAutor, UUID idEditorial) throws MiException{
+        validar(isbn, titulo, ejemplares, idAutor, idEditorial);
         Autor autor = autorRepositorio.findById(idAutor).get();
         Editorial editorial = editorialRepositorio.findById(idEditorial).get();
         Libro libro = new Libro();
@@ -53,7 +55,8 @@ public class LibroServicio {
     }
 
     @Transactional
-    public void modificarLibro(Long isbn, String titulo, int ejemplares, String idAutor, UUID idEditorial){
+    public void modificarLibro(Long isbn, String titulo, int ejemplares, String idAutor, UUID idEditorial) throws MiException{
+        validar(isbn, titulo, ejemplares, idAutor, idEditorial);
         Optional<Libro> respuestaLibro = libroRepositorio.findById(isbn);
         Optional<Autor> respuestaAutor = autorRepositorio.findById(idAutor);
         Optional<Editorial> respuestaEditorial = editorialRepositorio.findById(idEditorial);
@@ -75,6 +78,27 @@ public class LibroServicio {
             libro.setEjemplares(ejemplares);
             libro.setAutor(autor);
             libro.setEditorial(editorial);
+        }
+    }
+
+    private void validar(Long isbn, String titulo, int ejemplares, String idAutor, UUID idEditorial) throws MiException {
+        if (isbn == null) {
+            throw new MiException("el isbn no puede ser nulo o estar vacio");
+        }
+
+        if (titulo.isEmpty() || titulo == null) {
+            throw new MiException("el titulo no puede ser nulo o estar vacio");
+        }
+
+        if (ejemplares <= 0) {
+            throw new MiException("ejemplares no puede ser nulo");
+        }
+        if (idAutor.isEmpty() || idAutor == null) {
+            throw new MiException("el Autor no puede ser nulo o estar vacio");
+        }
+
+        if (idEditorial == null) {
+            throw new MiException("La Editorial no puede ser nula o estar vacia");
         }
     }
 
