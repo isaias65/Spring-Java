@@ -2,7 +2,6 @@ package com.egg.biblioteca.servicios;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class EditorialServicio {
         return editoriales;
     }
     @Transactional
-    public void modificarEditorial(String nombre, UUID id) throws MiException{
+    public void modificarEditorial(String nombre, String id) throws MiException{
         validar(nombre);
         Optional<Editorial> respuesta = editorialRepositorio.findById(id);
         if (respuesta.isPresent()) {
