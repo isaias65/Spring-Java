@@ -21,13 +21,13 @@ import com.egg.biblioteca.repositorios.LibroRepositorio;
 public class LibroServicio {
 
     @Autowired //variable se inicialize - injeccion de dependencias
-    LibroRepositorio libroRepositorio;
+    private LibroRepositorio libroRepositorio;
 
     @Autowired //variable se inicialize - injeccion de dependencias
-    AutorRepositorio autorRepositorio;
+    private AutorRepositorio autorRepositorio;
 
     @Autowired //variable se inicialize - injeccion de dependencias
-    EditorialRepositorio editorialRepositorio;
+    private EditorialRepositorio editorialRepositorio;
 
     @Transactional
     public void crearLibro(Long isbn, String titulo, Integer ejemplares, String idAutor, String idEditorial) throws MiException{
@@ -42,6 +42,8 @@ public class LibroServicio {
         libro.setAlta(new Date());
         libro.setAutor(autor);
         libro.setEditorial(editorial);
+
+        libroRepositorio.save(libro);
     }
 
     @Transactional(readOnly = true)
