@@ -1,27 +1,29 @@
 package com.egg.biblioteca.entidades;
 
-import java.util.UUID;
+import org.hibernate.annotations.GenericGenerator;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class Autor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    @GeneratedValue(generator = "uuid")
+    //Se sigue usando pero ya sugieren reemplazar esta estrategia.
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id;
     private String nombre;
 
     public Autor() {
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

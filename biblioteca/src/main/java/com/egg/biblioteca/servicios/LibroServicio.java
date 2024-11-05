@@ -80,6 +80,11 @@ public class LibroServicio {
         }
     }
 
+    @Transactional(readOnly = true)
+    public Libro getOne(Long isbn) {
+        return libroRepositorio.getReferenceById(isbn);
+    }
+
     private void validar(Long isbn, String titulo, Integer ejemplares, String idAutor, String idEditorial) throws MiException {
         if (isbn == null) {
             throw new MiException("el isbn no puede ser nulo o estar vacio");
