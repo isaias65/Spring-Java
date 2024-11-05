@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.egg.biblioteca.entidades.Autor;
 import com.egg.biblioteca.entidades.Editorial;
+import com.egg.biblioteca.entidades.Libro;
 import com.egg.biblioteca.excepciones.MiException;
 import com.egg.biblioteca.servicios.AutorServicio;
 import com.egg.biblioteca.servicios.EditorialServicio;
@@ -46,10 +47,23 @@ public class LibroControlador {
                     libroServicio.crearLibro(isbn, titulo, ejemplares, idAutor, idEditorial);
                     modelo.put("exito", "El libro fue cargado correctamente");
                 } catch (MiException ex) {
+                    List<Autor> autores = autorServicio.listarAutores();
+                    List<Editorial> editorial = editorialServicio.listarEditoriales();
+
+                    modelo.addAttribute("autores", autores);
+                    modelo.addAttribute("editoriales", editorial);
+
                     modelo.put("error", ex.getMessage());
                     return "libro_form.html";
                 }
                 return "index.html";
     }
 
+    @GetMapping("/lista")
+    public String listar(ModelMap modelo) {
+        List<Libro> libros = libroServicio.listarLibros();
+        modelo.addAttribute("libros", libros);
+
+        return "libro_list.html";
+    }
 }
