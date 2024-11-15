@@ -28,7 +28,6 @@ public class SeguridadWeb {
                         .defaultSuccessUrl("/inicio",true)
                         .permitAll()
                 )
-
                 .logout((logout) -> logout
                         .logoutUrl("/logout")
                         .logoutSuccessUrl("/login")

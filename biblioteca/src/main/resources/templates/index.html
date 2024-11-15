@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
-    <head th:replace="/fragments/head :: head"></head>
+<head th:replace="~{fragments/head :: head}"></head>
     <body>
-        <nav th:repalce="/fragments/navbar :: nav"></nav>
+        <nav th:replace="/fragments/navbar :: nav"></nav>
 
         <div th:if="${exito}!=null" class="card text-white bg-success mb-3 mt-3 mensajeExito" >
             <div class="card-body">
